@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
+import { WatchedMovie } from "../App";
 
 type Rating = {
     Source: string;
     Value: string;
 };
 
-type MovieDetails = {
+type Movie = {
     Actors: string;
     Awards: string;
     Country: string;
@@ -35,13 +36,16 @@ type MovieDetails = {
 type MovieDetailsProps = {
     selectedId: string;
     onCloseMovie: () => void;
+    onAddWatch: (movie: WatchedMovie) => void;
 };
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({
     selectedId,
-    onCloseMovie
+    onCloseMovie,
+    onAddWatch
 }) => {
-    const [movie, setMovie] = useState<MovieDetails | null>(null);
+    const [movie, setMovie] = useState<Movie | null>(null);
+    const [rating, setRating] = useState(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const {
@@ -88,6 +92,22 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
         getMovieDetails();
     }, [selectedId]);
 
+    const handleAdd = () => {
+        if (!title || !poster || !year || !rating) return;
+        const newWatchedMovie = {
+            imdbID: selectedId,
+            title,
+            year,
+            poster,
+            imdbRating: Number(imdbRating),
+            runtime: Number(runtime?.split(" ").at(0)),
+            userRating: rating
+        };
+
+        onAddWatch(newWatchedMovie);
+        onCloseMovie();
+    };
+
     return (
         <div className="details">
             {isLoading ? (
@@ -114,7 +134,14 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
 
                     <section>
                         <div className="rating">
-                            <StarRating maxRating={10} size={24} />
+                            <StarRating
+                                maxRating={10}
+                                size={24}
+                                onSetRating={setRating}
+                            />
+                            <button className="btn-add" onClick={handleAdd}>
+                                + Add to list
+                            </button>
                         </div>
                         <p>
                             <em>{plot}</em>

@@ -1,6 +1,7 @@
 import React from "react";
 import { average } from "../utils/helpers";
-import { WatchedMovieProps } from "./WatchedMovie";
+
+import { type WatchedMovie as WatchedMovieProps } from "../App";
 
 const WatchedSummary: React.FC<{ watched: WatchedMovieProps[] }> = ({
     watched

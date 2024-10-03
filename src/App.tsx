@@ -10,14 +10,23 @@ import Box from "./components/Box";
 import MovieList from "./components/MovieList";
 import WatchedList from "./components/WatchedList";
 import WatchedSummary from "./components/WatchedSummary";
-import { tempMovieData, tempWatchedData } from "./data";
 import Loader from "./components/Loader";
 import ErrorMessage from "./components/ErrorMessage";
 import MovieDetails from "./components/MovieDetails";
 
+export type WatchedMovie = {
+    imdbID: string;
+    title: string;
+    year: string;
+    poster: string;
+    runtime: number;
+    imdbRating: number;
+    userRating: number;
+};
+
 function App() {
     const [movies, setMovies] = useState([]);
-    const [watched, setWatched] = useState([]);
+    const [watched, setWatched] = useState<WatchedMovie[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [query, setQuery] = useState("");
@@ -62,6 +71,10 @@ function App() {
         return () => {};
     }, [query]);
 
+    const handleAddWatch = (movie: WatchedMovie) => {
+        setWatched((watched) => [...watched, movie]);
+    };
+
     const handleSelectMovie = (id: string) => {
         setSelectedId((curId) => (curId === id ? null : id));
     };
@@ -94,6 +107,7 @@ function App() {
                         <MovieDetails
                             selectedId={selectedId}
                             onCloseMovie={handleCloseMovie}
+                            onAddWatch={handleAddWatch}
                         />
                     ) : (
                         <>

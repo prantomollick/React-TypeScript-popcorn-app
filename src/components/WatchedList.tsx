@@ -1,5 +1,6 @@
 import React from "react";
-import WatchedMovie, { WatchedMovieProps } from "./WatchedMovie";
+import WatchedMovie from "./WatchedMovie";
+import { type WatchedMovie as WatchedMovieProps } from "../App";
 
 type Props = {
     watched: WatchedMovieProps[];

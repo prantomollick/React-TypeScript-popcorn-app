@@ -1,26 +1,18 @@
 import React from "react";
 
-export type WatchedMovieProps = {
-    imdbID?: string;
-    Title: string;
-    Year?: string;
-    Poster: string;
-    runtime: number;
-    imdbRating: number;
-    userRating: number;
-};
+import { type WatchedMovie as WatchedMovieProps } from "../App";
 
 const WatchedMovie: React.FC<WatchedMovieProps> = ({
-    Title,
-    Poster,
+    title,
+    poster,
     runtime,
     imdbRating,
     userRating
 }) => {
     return (
         <li>
-            <img src={Poster} alt={`${Title} poster`} />
-            <h3>{Title}</h3>
+            <img src={poster} alt={`${title} poster`} />
+            <h3>{title}</h3>
             <div>
                 <p>
                     <span>⭐️</span>
