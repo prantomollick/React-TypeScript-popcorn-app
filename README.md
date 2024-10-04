@@ -2,7 +2,7 @@
 
 Popcorn Movie Rater is a sleek and intuitive web application built with React and TypeScript. Designed for movie enthusiasts, this app allows users to rate and review their favorite films. With a user-friendly interface and seamless navigation, Popcorn Movie Rater makes it easy to discover new movies, share opinions, and see what others think. Whether you’re a casual viewer or a film critic, this app is your go-to platform for all things movies.
 
-[![React-TypeScript-popcorn-app](./usePopcorn.png "React-TypeScript-popcorn-app")](#)
+[![React-TypeScript-popcorn-app](./usePopcorn-1.png "React-TypeScript-popcorn-app")](#)
 
 # Table of Contents
 
