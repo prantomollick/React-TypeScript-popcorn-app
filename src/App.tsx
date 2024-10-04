@@ -33,16 +33,16 @@ export type TempMovie = {
 };
 
 function App() {
-    const [movies, setMovies] = useState<TempMovie[]>([]);
+    const [movies, setMovies] = useState([]);
     const [watched, setWatched] = useState<WatchedMovie[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [query, setQuery] = useState("");
     const [selectedId, setSelectedId] = useState<null | string>(null);
 
-    console.log(movies);
-
     useEffect(() => {
+        const controller = new AbortController();
+
         const fetchMovies = async () => {
             try {
                 setIsLoading(true);
@@ -50,7 +50,8 @@ function App() {
                 const res = await fetch(
                     `http://www.omdbapi.com/?apikey=${
                         import.meta.env.VITE_OMDB_API_KEY
-                    }&s=${query}`
+                    }&s=${query}`,
+                    { signal: controller.signal }
                 );
 
                 if (!res.ok)
@@ -60,8 +61,9 @@ function App() {
 
                 const data = await res.json();
                 setMovies(data.Search);
+                setError("");
             } catch (error) {
-                if (error instanceof Error) {
+                if (error instanceof Error && error.name !== "AbortError") {
                     console.error(error.message);
                     setError(error.message);
                 }
@@ -71,12 +73,16 @@ function App() {
         };
 
         if (query.length < 3) {
-            setMovies(tempMovieData);
+            setMovies([]);
             setError("");
             return; // prevent unnecessary API calls
         }
-
+        handleCloseMovie();
         fetchMovies();
+
+        return () => {
+            controller.abort();
+        };
     }, [query]);
 
     const handleAddWatch = (movie: WatchedMovie) => {

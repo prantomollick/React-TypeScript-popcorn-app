@@ -101,7 +101,22 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
     useEffect(() => {
         if (!title) return;
         document.title = `Movie | ${title}`;
+
+        return () => {
+            document.title = "usePopcorn";
+        };
     }, [title]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                onCloseMovie();
+            }
+        };
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [onCloseMovie]);
 
     const handleAdd = () => {
         if (!title || !poster || !year || !rating) return;
