@@ -7,13 +7,12 @@ import NumRestult from "./components/NumRestult";
 import Search from "./components/Search";
 
 import Box from "./components/Box";
+import ErrorMessage from "./components/ErrorMessage";
+import Loader from "./components/Loader";
+import MovieDetails from "./components/MovieDetails";
 import MovieList from "./components/MovieList";
 import WatchedList from "./components/WatchedList";
 import WatchedSummary from "./components/WatchedSummary";
-import Loader from "./components/Loader";
-import ErrorMessage from "./components/ErrorMessage";
-import MovieDetails from "./components/MovieDetails";
-import { tempMovieData } from "./data";
 
 export type WatchedMovie = {
     imdbID: string;
