@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 type SearchProps = {
     query: string;
@@ -6,6 +6,30 @@ type SearchProps = {
 };
 
 const Search: React.FC<SearchProps> = ({ query, onSetQuery }) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+    inputRef.current?.focus();
+
+    useEffect(() => {
+        const handleKeydown = (e: KeyboardEvent) => {
+            if (document.activeElement === inputRef.current) {
+                return;
+            }
+            if (e.key === "Enter") {
+                inputRef.current?.focus();
+                onSetQuery("");
+            }
+        };
+
+        document.addEventListener("keydown", handleKeydown);
+
+        return () => document.removeEventListener("keydown", handleKeydown);
+    }, [onSetQuery]);
+
+    // useEffect(() => {
+    //     const el = document.querySelector(".search") as HTMLInputElement;
+    //     el.focus();
+    // }, []);
+
     return (
         <input
             className="search"
@@ -13,6 +37,7 @@ const Search: React.FC<SearchProps> = ({ query, onSetQuery }) => {
             placeholder="Search movies..."
             value={query}
             onChange={(e) => onSetQuery(e.target.value)}
+            ref={inputRef}
         />
     );
 };
