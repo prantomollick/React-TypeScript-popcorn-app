@@ -13,6 +13,7 @@ import WatchedSummary from "./components/WatchedSummary";
 import Loader from "./components/Loader";
 import ErrorMessage from "./components/ErrorMessage";
 import MovieDetails from "./components/MovieDetails";
+import { tempMovieData } from "./data";
 
 export type WatchedMovie = {
     imdbID: string;
@@ -24,13 +25,22 @@ export type WatchedMovie = {
     userRating: number;
 };
 
+export type TempMovie = {
+    imdbID: string;
+    Title: string;
+    Year: string;
+    Poster: string;
+};
+
 function App() {
-    const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState<TempMovie[]>([]);
     const [watched, setWatched] = useState<WatchedMovie[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [query, setQuery] = useState("");
     const [selectedId, setSelectedId] = useState<null | string>(null);
+
+    console.log(movies);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -61,14 +71,12 @@ function App() {
         };
 
         if (query.length < 3) {
-            setMovies([]);
+            setMovies(tempMovieData);
             setError("");
             return; // prevent unnecessary API calls
         }
 
         fetchMovies();
-
-        return () => {};
     }, [query]);
 
     const handleAddWatch = (movie: WatchedMovie) => {

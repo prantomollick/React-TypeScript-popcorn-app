@@ -1,10 +1,10 @@
 import React from "react";
 
 export type MovieProps = {
-    imdbID?: string;
-    Poster: string;
+    imdbID: string;
     Title: string;
     Year: string;
+    Poster: string;
     onSelectMovie: (id: string) => void;
 };
 

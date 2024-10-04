@@ -1,8 +1,15 @@
 import React from "react";
-import Movie, { MovieProps } from "./Movie";
+import Movie from "./Movie";
+
+export type Movies = {
+    imdbID: string;
+    Title: string;
+    Year: string;
+    Poster: string;
+};
 
 const MovieList: React.FC<{
-    movies: MovieProps[];
+    movies: Movies[];
     onSelectMovie: (id: string) => void;
 }> = ({ movies, onSelectMovie }) => {
     return (

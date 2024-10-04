@@ -98,6 +98,11 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
         getMovieDetails();
     }, [selectedId]);
 
+    useEffect(() => {
+        if (!title) return;
+        document.title = `Movie | ${title}`;
+    }, [title]);
+
     const handleAdd = () => {
         if (!title || !poster || !year || !rating) return;
 
