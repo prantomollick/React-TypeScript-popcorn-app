@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
-import { WatchedMovie } from "../App";
+import { type WatchedMovie } from "../App";
 
 type Rating = {
     Source: string;
@@ -35,12 +35,15 @@ type Movie = {
 
 type MovieDetailsProps = {
     selectedId: string;
+    watched: WatchedMovie[];
+
     onCloseMovie: () => void;
     onAddWatch: (movie: WatchedMovie) => void;
 };
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({
     selectedId,
+    watched,
     onCloseMovie,
     onAddWatch
 }) => {
@@ -61,7 +64,10 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
         Genre: genre
     } = movie || {};
 
-    console.log(title, year);
+    const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+    const watchedUserRating = watched.find(
+        (movie) => movie.imdbID === selectedId
+    )?.userRating;
 
     useEffect(() => {
         const getMovieDetails = async () => {
@@ -94,6 +100,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
 
     const handleAdd = () => {
         if (!title || !poster || !year || !rating) return;
+
         const newWatchedMovie = {
             imdbID: selectedId,
             title,
@@ -134,14 +141,28 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
 
                     <section>
                         <div className="rating">
-                            <StarRating
-                                maxRating={10}
-                                size={24}
-                                onSetRating={setRating}
-                            />
-                            <button className="btn-add" onClick={handleAdd}>
-                                + Add to list
-                            </button>
+                            {!isWatched ? (
+                                <>
+                                    <StarRating
+                                        maxRating={10}
+                                        size={24}
+                                        onSetRating={setRating}
+                                    />
+                                    {rating > 0 && (
+                                        <button
+                                            className="btn-add"
+                                            onClick={handleAdd}
+                                        >
+                                            + Add to list
+                                        </button>
+                                    )}
+                                </>
+                            ) : (
+                                <p>
+                                    You rated the movie! {watchedUserRating}{" "}
+                                    <span>⭐</span>
+                                </p>
+                            )}
                         </div>
                         <p>
                             <em>{plot}</em>

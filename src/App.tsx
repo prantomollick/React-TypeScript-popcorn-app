@@ -75,6 +75,10 @@ function App() {
         setWatched((watched) => [...watched, movie]);
     };
 
+    const handleRemoveWatch = (id: string) => {
+        setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+    };
+
     const handleSelectMovie = (id: string) => {
         setSelectedId((curId) => (curId === id ? null : id));
     };
@@ -108,11 +112,15 @@ function App() {
                             selectedId={selectedId}
                             onCloseMovie={handleCloseMovie}
                             onAddWatch={handleAddWatch}
+                            watched={watched}
                         />
                     ) : (
                         <>
                             <WatchedSummary watched={watched} />
-                            <WatchedList watched={watched} />
+                            <WatchedList
+                                watched={watched}
+                                onDeletedWatched={handleRemoveWatch}
+                            />
                         </>
                     )}
                 </Box>

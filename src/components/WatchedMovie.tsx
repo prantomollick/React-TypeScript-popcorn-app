@@ -2,7 +2,11 @@ import React from "react";
 
 import { type WatchedMovie as WatchedMovieProps } from "../App";
 
-const WatchedMovie: React.FC<WatchedMovieProps> = ({
+const WatchedMovie: React.FC<
+    WatchedMovieProps & { onDeletedWatched: (id: string) => void }
+> = ({
+    onDeletedWatched,
+    imdbID,
     title,
     poster,
     runtime,
@@ -26,6 +30,13 @@ const WatchedMovie: React.FC<WatchedMovieProps> = ({
                     <span>⏳</span>
                     <span>{runtime} min</span>
                 </p>
+
+                <button
+                    className="btn-delete"
+                    onClick={() => onDeletedWatched(imdbID)}
+                >
+                    X
+                </button>
             </div>
         </li>
     );
