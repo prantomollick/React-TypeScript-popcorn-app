@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import StarRating from "./StarRating";
 import Loader from "./Loader";
 import { type WatchedMovie } from "../App";
+import { useKey } from "../hooks/useKey";
+import { useTitle } from "../hooks/useTitle";
 
 type Rating = {
     Source: string;
@@ -65,6 +67,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
     } = movie || {};
 
     const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+
     const watchedUserRating = watched.find(
         (movie) => movie.imdbID === selectedId
     )?.userRating;
@@ -98,25 +101,8 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
         getMovieDetails();
     }, [selectedId]);
 
-    useEffect(() => {
-        if (!title) return;
-        document.title = `Movie | ${title}`;
-
-        return () => {
-            document.title = "usePopcorn";
-        };
-    }, [title]);
-
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                onCloseMovie();
-            }
-        };
-        document.addEventListener("keydown", handleKeyDown);
-
-        return () => document.removeEventListener("keydown", handleKeyDown);
-    }, [onCloseMovie]);
+    useTitle(title!);
+    useKey("Escape", onCloseMovie);
 
     const handleAdd = () => {
         if (!title || !poster || !year || !rating) return;
